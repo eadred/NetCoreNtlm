@@ -31,6 +31,7 @@ namespace WebListenerTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<IAuthorizationHelper, AuthorizationHelper>();
 
             services.AddPolicies();
 
