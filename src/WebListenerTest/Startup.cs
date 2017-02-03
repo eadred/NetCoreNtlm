@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace WebListenerTest
 {
@@ -46,6 +47,15 @@ namespace WebListenerTest
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.Use(async (context, next) =>
+            {
+                //Remove the server header (for when using Web Listener)
+                //Note that attempting to set this to something other than a blank string the header
+                //ends up being set to this string plus 'Microsoft-HTTPAPI/2.0'
+                context.Response.Headers.Add("Server", "");
+                await next();
+            });
 
             app.UseStaticFiles();
 

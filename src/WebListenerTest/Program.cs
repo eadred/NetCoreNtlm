@@ -12,7 +12,7 @@ namespace WebListenerTest
         public static void Main(string[] args)
         {
             var hostBuilder = new WebHostBuilder()
-                .UseKestrel()
+                .UseKestrel(options => options.AddServerHeader = false) //This has no effect when using WebListener
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>();
