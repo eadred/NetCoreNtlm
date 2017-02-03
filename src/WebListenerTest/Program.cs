@@ -11,14 +11,24 @@ namespace WebListenerTest
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            var hostBuilder = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
 
-            host.Run();
+            //Using UseWebListener doesn't agree with trying to run in IISExpress
+            var wlEnv = Environment.GetEnvironmentVariable("WEB_LISTENER");
+            if (!string.IsNullOrEmpty(wlEnv) && wlEnv == "1")
+            {
+                hostBuilder = hostBuilder.UseWebListener(options =>
+                {
+                    options.ListenerSettings.Authentication.AllowAnonymous = false;
+                    options.ListenerSettings.Authentication.Schemes = Microsoft.Net.Http.Server.AuthenticationSchemes.NTLM;
+                });
+            }
+
+            hostBuilder.Build().Run();
         }
     }
 }
