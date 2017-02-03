@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using WebListenerTest.Auth;
 
 namespace WebListenerTest.Controllers
 {
@@ -24,6 +26,18 @@ namespace WebListenerTest.Controllers
         {
             ViewData["Message"] = "Your contact page.";
 
+            return View();
+        }
+
+        [Authorize(Policies.MarketingOnly)]
+        public IActionResult Marketing()
+        {
+            return View();
+        }
+
+        [Authorize(Policies.FinanceOnly)]
+        public IActionResult Finance()
+        {
             return View();
         }
 

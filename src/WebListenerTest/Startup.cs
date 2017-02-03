@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using WebListenerTest.Auth;
 
 namespace WebListenerTest
 {
@@ -28,6 +30,10 @@ namespace WebListenerTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddPolicies();
+
             // Add framework services.
             services.AddMvc();
         }
