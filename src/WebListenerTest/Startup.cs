@@ -54,6 +54,8 @@ namespace WebListenerTest
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseStatusCodePagesWithRedirects("~/StatusCode/{0}");
+
             app.Use(async (context, next) =>
             {
                 //Remove the server header (for when using Web Listener)
