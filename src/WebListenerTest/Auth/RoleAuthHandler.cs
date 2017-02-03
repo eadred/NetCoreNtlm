@@ -18,6 +18,10 @@ namespace WebListenerTest.Auth
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
         {
+#if MAC
+            context.Succeed(requirement);
+            return Task.CompletedTask;
+#else
             var roleName = configuration.GetSection("Roles").GetValue<string>(requirement.RoleAlias);
 
             if (context.User.Identity.IsAuthenticated && context.User.IsInRole(roleName))
@@ -30,6 +34,7 @@ namespace WebListenerTest.Auth
             }
 
             return Task.CompletedTask;
+#endif
         }
     }
 }
